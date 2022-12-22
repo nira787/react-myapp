@@ -12,8 +12,7 @@ const App = () => {
     supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
     });
-}, []);
-
+  }, []);
 
   return (
     <div

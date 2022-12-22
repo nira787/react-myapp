@@ -6,15 +6,48 @@ const Home = () => {
   const [newRanking, setNewRanking] = useState("");
   const [newScore, setNewScore] = useState("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    (async () => await getRecords())();
+  }, []);
 
   // 成績を登録する
-  const addRecord = (e) => {
+  const addRecord = async (e) => {
     e.preventDefault();
+
+    try {
+      const { error } = await supabase.from("records").insert([
+        {
+          ranking: Number(newRanking),
+          score: Number(newScore),
+          user_id: supabase.auth.user().id,
+        },
+      ]);
+      if (error) throw error;
+
+      await getRecords();
+
+      setNewRanking("");
+      setNewScore("");
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   // 成績を取得する
-  const getRecords = () => {};
+  const getRecords = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("records")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+
+      setRecords(data);
+    } catch (error) {
+      alert(error.message);
+      setRecords([]);
+    }
+  };
 
   // ログアウトする
   const signOut = () => {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "./supabase";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -6,8 +7,22 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   // ログイン・ユーザー登録を行う
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
+    try {
+      if (isLogin) {
+        const { error } = await supabase.auth.signIn({
+          email: email,
+          password: password,
+        });
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
+        if (error) throw error;
+      }
   };
 
   return (

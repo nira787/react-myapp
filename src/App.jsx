@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import Home from "./Home";
 import Login from "./Login";
+import { supabase } from "./supabase";
 
 const App = () => {
   const [session, setSession] = useState(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setSession(supabase.auth.session());
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+    });
+}, []);
+
 
   return (
     <div

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { supabase } from "./supabase";
 
 const Home = () => {
   const [records, setRecords] = useState([]);
@@ -16,7 +17,9 @@ const Home = () => {
   const getRecords = () => {};
 
   // ログアウトする
-  const signOut = () => {};
+  const signOut = () => {
+    supabase.auth.signOut();
+  };
 
   return (
     <div

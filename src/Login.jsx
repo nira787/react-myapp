@@ -1,4 +1,3 @@
-// src/Login.jsx
 import { useState } from "react";
 
 const Login = () => {
